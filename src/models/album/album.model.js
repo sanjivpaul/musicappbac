@@ -12,11 +12,32 @@ const albumSchema = new Schema(
     },
 
     // (FK)
+    // Proper reference to Artist model
     artist_id: {
-      type: String,
-      unique: true,
-      lowecase: true,
-      trim: true,
+      type: Schema.Types.ObjectId,
+      ref: "Artist",
+      required: [true, "Artist reference is required"],
+      index: true,
+    },
+
+    genre: {
+      type: [String], // Array for multiple genres
+      required: true,
+      enum: {
+        values: [
+          "pop",
+          "rock",
+          "hip-hop",
+          "jazz",
+          "classical",
+          "electronic",
+          "rnb",
+          "country",
+          "metal",
+          "folk",
+        ],
+        message: "Invalid genre specified",
+      },
     },
 
     // (how many times any song in the album is played)
@@ -40,6 +61,8 @@ const albumSchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true }, // Include virtuals when converted to JSON
+    toObject: { virtuals: true },
   }
 );
 

@@ -13,7 +13,6 @@ const artistSchema = new Schema(
 
     country_of_origin: {
       type: String,
-      unique: true,
       lowecase: true,
       trim: true,
     },

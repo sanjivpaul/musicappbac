@@ -5,7 +5,6 @@ const songSchema = new Schema(
     song_name: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
       trim: true,
       index: true,
@@ -13,7 +12,6 @@ const songSchema = new Schema(
     language: {
       type: String,
       required: true,
-      unique: true,
       lowecase: true,
       trim: true,
     },
@@ -31,7 +29,7 @@ const songSchema = new Schema(
       required: true,
       lowecase: true,
       trim: true,
-      index: true,
+      // index: true,
     },
 
     // (FK)
@@ -40,7 +38,7 @@ const songSchema = new Schema(
       required: true,
       lowecase: true,
       trim: true,
-      index: true,
+      // index: true,
     },
 
     song_path: {
