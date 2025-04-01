@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include('partials/sidebar') %> <%- include('partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="dashboard-stats">
+          <p>Additional admin content here</p>
+        </div>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+    <script>
+      // Handle token expiry
+      document.addEventListener("DOMContentLoaded", function () {
+        // Log all cookies available to JavaScript
+        console.log("Document Cookies:", document.cookie);
+        // Check for 401 responses
+        fetch("/admin/check-auth", {
+          credentials: "include",
+        })
+          .then((response) => {
+            console.log("response===>", response);
+
+            if (response.status === 401) {
+              // Try to refresh token
+              return fetch("/admin/refresh-token", {
+                method: "GET",
+                credentials: "include",
+              });
+            }
+            return response;
+          })
+          .then((response) => {
+            if (response.status === 401) {
+              window.location.href = "/admin/login";
+            }
+          })
+          .catch((error) => {
+            console.error("Auth check failed:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

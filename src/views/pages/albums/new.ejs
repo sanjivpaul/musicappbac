@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> <%-
+    include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Create New Album</h1>
+          <a href="/admin/albums" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Albums
+          </a>
+        </div>
+
+        <% if (messages.error) { %>
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-circle"></i> <%= messages.error %>
+        </div>
+        <% } %>
+
+        <form
+          action="/admin/albums"
+          method="POST"
+          class="album-form"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group">
+            <label for="album_name">Album Name</label>
+            <input
+              type="text"
+              id="album_name"
+              name="album_name"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="artist_id">Artist</label>
+            <select
+              id="artist_id"
+              name="artist_id"
+              class="form-control"
+              required
+            >
+              <option value="">Select Artist</option>
+              <% artists.forEach(artist => { %>
+              <option value="<%= artist._id %>">
+                <%= artist.artist_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Genre</label>
+            <div class="genre-select">
+              <% genres.forEach(genre => { %>
+              <div class="genre-option">
+                <input
+                  type="checkbox"
+                  id="genre_<%= genre %>"
+                  name="genre"
+                  value="<%= genre %>"
+                />
+                <label for="genre_<%= genre %>"><%= genre %></label>
+              </div>
+              <% }); %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="thumbnail">Album Cover</label>
+            <input
+              type="file"
+              id="thumbnail"
+              name="thumbnail"
+              class="form-control"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Create Album
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

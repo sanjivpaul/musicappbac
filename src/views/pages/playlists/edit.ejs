@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> 
+    <%- include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Edit Playlist</h1>
+          <a href="/admin/playlists" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Playlists
+          </a>
+        </div>
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> <%= messages.error %>
+          </div>
+        <% } %>
+
+        <form action="/admin/playlists/<%= playlist._id %>?_method=PUT" method="POST" class="playlist-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="playlist_name">Playlist Name</label>
+            <input
+              type="text"
+              id="playlist_name"
+              name="playlist_name"
+              class="form-control"
+              value="<%= playlist.playlist_name %>"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="user_id">Owner</label>
+            <select id="user_id" name="user_id" class="form-control" required>
+              <option value="">Select User</option>
+              <% users.forEach(user => { %>
+                <option 
+                  value="<%= user._id %>"
+                  <%= user._id.toString() === playlist.user_id.toString() ? 'selected' : '' %>
+                >
+                  <%= user.username %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="is_public">Visibility</label>
+            <div class="checkbox-container">
+              <input 
+                type="checkbox" 
+                id="is_public" 
+                name="is_public"
+                <%= playlist.is_public ? 'checked' : '' %>
+              >
+              <label for="is_public">Public Playlist</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              class="form-control"
+              rows="3"
+            ><%= playlist.description || '' %></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Current Image</label>
+            <% if (playlist.thumbnail_path) { %>
+              <img src="<%= playlist.thumbnail_path %>" alt="Playlist image" class="current-thumbnail">
+            <% } else { %>
+              <p>No image</p>
+            <% } %>
+          </div>
+
+          <div class="form-group">
+            <label for="thumbnail">New Image (leave blank to keep current)</label>
+            <input 
+              type="file" 
+              id="thumbnail" 
+              name="thumbnail" 
+              class="form-control"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Update Playlist
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

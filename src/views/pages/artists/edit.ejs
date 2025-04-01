@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> 
+    <%- include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Edit Artist</h1>
+          <a href="/admin/artists" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Artists
+          </a>
+        </div>
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> <%= messages.error %>
+          </div>
+        <% } %>
+
+        <form action="/admin/artists/<%= artist._id %>?_method=PUT" method="POST" class="artist-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="artist_name">Artist Name</label>
+            <input
+              type="text"
+              id="artist_name"
+              name="artist_name"
+              class="form-control"
+              value="<%= artist.artist_name %>"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="country_of_origin">Country of Origin</label>
+            <input
+              type="text"
+              id="country_of_origin"
+              name="country_of_origin"
+              class="form-control"
+              value="<%= artist.country_of_origin || '' %>"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" class="form-control" required>
+              <option value="">Select Category</option>
+              <% categories.forEach(category => { %>
+                <option 
+                  value="<%= category %>"
+                  <%= category === artist.category ? 'selected' : '' %>
+                >
+                  <%= category %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Current Image</label>
+            <% if (artist.thumbnail_path) { %>
+              <img src="<%= artist.thumbnail_path %>" alt="Artist image" class="current-thumbnail">
+            <% } else { %>
+              <p>No image</p>
+            <% } %>
+          </div>
+
+          <div class="form-group">
+            <label for="thumbnail">New Image (leave blank to keep current)</label>
+            <input 
+              type="file" 
+              id="thumbnail" 
+              name="thumbnail" 
+              class="form-control"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Update Artist
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 5px;
+        width: 80%;
+        max-width: 800px;
+      }
+
+      .song-results {
+        max-height: 400px;
+        overflow-y: auto;
+        margin: 15px 0;
+      }
+
+      .song-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+      }
+
+      .song-item input {
+        margin-right: 10px;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> <%-
+    include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <!-- <div class="content-header">
+          <h1>Songs in <%= playlist.playlist_name %></h1>
+          <a href="/admin/playlists" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Playlists
+          </a>
+        </div> -->
+
+        <!-- Add this button near the back button -->
+        <div class="content-header">
+          <h1>Songs in <%= playlist.playlist_name %></h1>
+          <div>
+            <a href="/admin/playlists" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Back to Playlists
+            </a>
+            <button id="addSongsBtn" class="btn btn-primary">
+              <i class="fas fa-plus"></i> Add Songs
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="songs-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Duration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% songs.forEach((song, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= song.song_name %></td>
+                <td><%= song.artist_id %></td>
+                <td><%= song.bitrate %></td>
+                <td class="actions">
+                  <button
+                    class="btn btn-sm btn-danger remove-song"
+                    data-song-id="<%= song._id %>"
+                  >
+                    <i class="fas fa-minus-circle"></i> Remove
+                  </button>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Add this modal at the bottom of the file -->
+    <div id="addSongsModal" class="modal">
+      <div class="modal-content">
+        <h3>Add Songs to Playlist</h3>
+        <div class="search-box">
+          <input
+            type="text"
+            id="songSearch"
+            placeholder="Search songs..."
+            class="form-control"
+          />
+        </div>
+        <div id="songResults" class="song-results">
+          <!-- Songs will be loaded here -->
+        </div>
+        <div class="modal-actions">
+          <button id="cancelAdd" class="btn btn-secondary">Cancel</button>
+          <button id="confirmAdd" class="btn btn-primary">Add Selected</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+    <!-- <script>
+      // Handle removing songs from playlist
+      document.querySelectorAll(".remove-song").forEach((button) => {
+        button.addEventListener("click", function () {
+          const songId = this.getAttribute("data-song-id");
+          const playlistId = "<%= playlist._id %>";
+
+          if (
+            confirm(
+              "Are you sure you want to remove this song from the playlist?"
+            )
+          ) {
+            fetch(`/admin/playlists/${playlistId}/songs/${songId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => {
+                if (response.ok) {
+                  window.location.reload();
+                } else {
+                  alert("Error removing song");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Error removing song");
+              });
+          }
+        });
+      });
+    </script> -->
+    <script>
+      // Handle removing songs from playlist
+      document.querySelectorAll(".remove-song").forEach((button) => {
+        button.addEventListener("click", function () {
+          const songId = this.getAttribute("data-song-id");
+          const playlistId = "<%= playlist._id %>";
+
+          if (
+            confirm(
+              "Are you sure you want to remove this song from the playlist?"
+            )
+          ) {
+            fetch(`/admin/playlists/${playlistId}/songs/${songId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => {
+                if (response.ok) {
+                  window.location.reload();
+                } else {
+                  alert("Error removing song");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Error removing song");
+              });
+          }
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        const addSongsBtn = document.getElementById("addSongsBtn");
+        const addSongsModal = document.getElementById("addSongsModal");
+        const cancelAdd = document.getElementById("cancelAdd");
+        const confirmAdd = document.getElementById("confirmAdd");
+        const songSearch = document.getElementById("songSearch");
+        const songResults = document.getElementById("songResults");
+
+        let selectedSongs = new Set();
+        let playlistId = "<%= playlist._id %>";
+
+        // Open modal
+        addSongsBtn.addEventListener("click", function () {
+          addSongsModal.style.display = "block";
+          loadAvailableSongs();
+        });
+
+        // Close modal
+        cancelAdd.addEventListener("click", function () {
+          addSongsModal.style.display = "none";
+          selectedSongs.clear();
+        });
+
+        // Search songs
+        songSearch.addEventListener(
+          "input",
+          debounce(function () {
+            loadAvailableSongs();
+          }, 300)
+        );
+
+        // Add selected songs
+        confirmAdd.addEventListener("click", async function () {
+          if (selectedSongs.size === 0) {
+            alert("Please select at least one song");
+            return;
+          }
+
+          try {
+            const response = await fetch(
+              `/admin/playlists/${playlistId}/songs`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  songs: Array.from(selectedSongs),
+                }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              alert(data.error || "Failed to add songs");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error adding songs");
+          }
+        });
+
+        // Load available songs not in playlist
+        async function loadAvailableSongs() {
+          try {
+            const searchQuery = songSearch.value.trim();
+            const response = await fetch(
+              `/admin/playlists/${playlistId}/available-songs?search=${encodeURIComponent(
+                searchQuery
+              )}`
+            );
+            const data = await response.json();
+
+            if (data.success) {
+              renderSongs(data.songs);
+            } else {
+              throw new Error(data.error || "Failed to load songs");
+            }
+          } catch (error) {
+            console.error("Error loading songs:", error);
+            songResults.innerHTML =
+              "<p>Error loading songs. Please try again.</p>";
+          }
+        }
+
+        // Render available songs
+        function renderSongs(songs) {
+          songResults.innerHTML = songs
+            .map(
+              (song) => `
+      <div class="song-item">
+        <input 
+          type="checkbox" 
+          id="song-${song._id}" 
+          value="${song._id}" 
+          ${selectedSongs.has(song._id) ? "checked" : ""}
+        >
+        <label for="song-${song._id}">
+          ${song.song_name} - ${song.artist_id.artist_name} (${formatDuration(
+                song.duration
+              )})
+        </label>
+      </div>
+    `
+            )
+            .join("");
+
+          // Update selection when checkboxes change
+          document.querySelectorAll(".song-item input").forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+              if (this.checked) {
+                selectedSongs.add(this.value);
+              } else {
+                selectedSongs.delete(this.value);
+              }
+            });
+          });
+        }
+
+        // Helper function to format duration
+        function formatDuration(seconds) {
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+        }
+
+        // Helper function to debounce
+        function debounce(func, wait) {
+          let timeout;
+          return function () {
+            const context = this,
+              args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+          };
+        }
+      });
+    </script>
+  </body>
+</html>

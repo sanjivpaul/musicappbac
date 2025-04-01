@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-light: #ebf0ff;
+        --secondary: #3f37c9;
+        --dark: #1e1e24;
+        --light: #f8f9fa;
+        --gray: #6c757d;
+        --danger: #dc3545;
+        --success: #28a745;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--dark);
+        background-color: #f5f7fb;
+      }
+
+      .admin-content {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 2rem;
+        margin: 1rem;
+      }
+
+      .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .content-header h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--dark);
+        margin: 0;
+      }
+
+      .song-form {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--dark);
+      }
+
+      .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--dark);
+        background-color: white;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+
+      .form-control:focus {
+        border-color: var(--primary);
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+      }
+
+      select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        color: white;
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary);
+        border-color: var(--secondary);
+      }
+
+      .btn-secondary {
+        color: white;
+        background-color: var(--gray);
+        border-color: var(--gray);
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+      }
+
+      .alert {
+        position: relative;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid transparent;
+        border-radius: var(--border-radius);
+      }
+
+      .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+      }
+
+      /* File input styling */
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .file-input-wrapper input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+
+      .file-input-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background-color: var(--primary-light);
+        border: 1px dashed var(--primary);
+        border-radius: var(--border-radius);
+        color: var(--primary);
+        transition: var(--transition);
+      }
+
+      .file-input-label:hover {
+        background-color: rgba(67, 97, 238, 0.1);
+      }
+
+      .file-input-label i {
+        margin-right: 0.5rem;
+      }
+
+      .file-name {
+        font-size: 0.875rem;
+        color: var(--gray);
+        margin-top: 0.5rem;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .content-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .content-header .btn {
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> <%-
+    include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Add New Song</h1>
+          <a href="/admin/songs" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Songs
+          </a>
+        </div>
+
+        <% if (messages.error) { %>
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-circle"></i> <%= messages.error %>
+        </div>
+        <% } %> <% if (messages.success) { %>
+        <div class="alert alert-success">
+          <i class="fas fa-check-circle"></i> <%= messages.success %>
+        </div>
+        <% } %>
+
+        <form
+          action="/admin/songs"
+          method="POST"
+          class="song-form"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group">
+            <label for="song_name">Song Name</label>
+            <input
+              type="text"
+              id="song_name"
+              name="song_name"
+              class="form-control"
+              placeholder="Enter song name"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="language">Language</label>
+              <input
+                type="text"
+                id="language"
+                name="language"
+                class="form-control"
+                placeholder="English"
+                required
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="bitrate">Bitrate</label>
+              <input
+                type="text"
+                id="bitrate"
+                name="bitrate"
+                class="form-control"
+                placeholder="320 kbps"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="artist_id">Artist</label>
+              <select
+                id="artist_id"
+                name="artist_id"
+                class="form-control"
+                required
+              >
+                <option value="">Select Artist</option>
+                <% artists.forEach(artist => { %>
+                <option value="<%= artist._id %>">
+                  <%= artist.artist_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="album_id">Album</label>
+              <select
+                id="album_id"
+                name="album_id"
+                class="form-control"
+                required
+              >
+                <option value="">Select Album</option>
+                <% albums.forEach(album => { %>
+                <option value="<%= album._id %>">
+                  <%= album.album_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Song File</label>
+            <div class="file-input-wrapper">
+              <label class="file-input-label">
+                <span><i class="fas fa-music"></i> Choose audio file</span>
+                <i class="fas fa-upload"></i>
+              </label>
+              <input
+                type="file"
+                id="song"
+                name="song"
+                class="form-control"
+                accept="audio/*"
+                required
+              />
+            </div>
+            <small class="file-name" id="songFileName">No file chosen</small>
+          </div>
+
+          <div class="form-group">
+            <label>Thumbnail Image</label>
+            <div class="file-input-wrapper">
+              <label class="file-input-label">
+                <span><i class="fas fa-image"></i> Choose thumbnail</span>
+                <i class="fas fa-upload"></i>
+              </label>
+              <input
+                type="file"
+                id="thumbnail"
+                name="thumbnail"
+                class="form-control"
+                accept="image/*"
+              />
+            </div>
+            <small class="file-name" id="thumbnailFileName"
+              >No file chosen</small
+            >
+          </div>
+
+          <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Save Song
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+    <script>
+      // Show selected file names
+      document.getElementById("song").addEventListener("change", function (e) {
+        const fileName = e.target.files[0]
+          ? e.target.files[0].name
+          : "No file chosen";
+        document.getElementById("songFileName").textContent = fileName;
+      });
+
+      document
+        .getElementById("thumbnail")
+        .addEventListener("change", function (e) {
+          const fileName = e.target.files[0]
+            ? e.target.files[0].name
+            : "No file chosen";
+          document.getElementById("thumbnailFileName").textContent = fileName;
+        });
+
+      // Form validation
+      document
+        .querySelector(".song-form")
+        .addEventListener("submit", function (e) {
+          const requiredFields = this.querySelectorAll("[required]");
+          let isValid = true;
+
+          requiredFields.forEach((field) => {
+            if (!field.value.trim()) {
+              field.style.borderColor = "var(--danger)";
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            e.preventDefault();
+            alert("Please fill all required fields");
+          }
+        });
+
+      // Reset field styles when user starts typing
+      document.querySelectorAll(".form-control").forEach((field) => {
+        field.addEventListener("input", function () {
+          this.style.borderColor = "#ced4da";
+        });
+      });
+    </script>
+  </body>
+</html>

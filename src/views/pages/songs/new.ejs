@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> <%-
+    include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Add New Song</h1>
+          <a href="/admin/songs" class="btn btn-secondary">Back to Songs</a>
+        </div>
+
+        <% if (messages.error) { %>
+        <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %> <% if (messages.success) { %>
+        <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+
+        <form
+          action="/admin/songs"
+          method="POST"
+          class="song-form"
+          enctype="multipart/form-data"
+        >
+          <div class="form-group">
+            <label for="song_name">Song Name</label>
+            <input
+              type="text"
+              id="song_name"
+              name="song_name"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="language">Language</label>
+            <input
+              type="text"
+              id="language"
+              name="language"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="bitrate">Bitrate</label>
+            <input
+              type="text"
+              id="bitrate"
+              name="bitrate"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="artist_id">Artist</label>
+            <select
+              id="artist_id"
+              name="artist_id"
+              class="form-control"
+              required
+            >
+              <option value="">Select Artist</option>
+              <% artists.forEach(artist => { %>
+              <option value="<%= artist._id %>">
+                <%= artist.artist_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="album_id">Album</label>
+            <select id="album_id" name="album_id" class="form-control" required>
+              <option value="">Select Album</option>
+              <% albums.forEach(album => { %>
+              <option value="<%= album._id %>"><%= album.album_name %></option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="song_path">Song File URL</label>
+            <!-- <input
+              type="text"
+              id="song_path"
+              name="song_path"
+              class="form-control"
+            /> -->
+            <!-- Or for file upload: -->
+            <input type="file" id="song" name="song" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="thumbnail_path">Thumbnail URL</label>
+            <!-- <input
+              type="text"
+              id="thumbnail_path"
+              name="thumbnail_path"
+              class="form-control"
+            /> -->
+            <!-- Or for file upload: -->
+            <input
+              type="file"
+              id="thumbnail"
+              name="thumbnail"
+              class="form-control"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save Song</button>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+    <script>
+      // Show selected file names
+      document.getElementById("song").addEventListener("change", function (e) {
+        const fileName = e.target.files[0]
+          ? e.target.files[0].name
+          : "No file chosen";
+        document.getElementById("songFileName").textContent = fileName;
+      });
+
+      document
+        .getElementById("thumbnail")
+        .addEventListener("change", function (e) {
+          const fileName = e.target.files[0]
+            ? e.target.files[0].name
+            : "No file chosen";
+          document.getElementById("thumbnailFileName").textContent = fileName;
+        });
+
+      // Form validation
+      document
+        .querySelector(".song-form")
+        .addEventListener("submit", function (e) {
+          const requiredFields = this.querySelectorAll("[required]");
+          let isValid = true;
+
+          requiredFields.forEach((field) => {
+            if (!field.value.trim()) {
+              field.style.borderColor = "var(--danger)";
+              isValid = false;
+            }
+          });
+
+          if (!isValid) {
+            e.preventDefault();
+            alert("Please fill all required fields");
+          }
+        });
+
+      // Reset field styles when user starts typing
+      document.querySelectorAll(".form-control").forEach((field) => {
+        field.addEventListener("input", function () {
+          this.style.borderColor = "#ced4da";
+        });
+      });
+    </script>
+  </body>
+</html>

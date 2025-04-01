@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> | Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  </head>
+  <body>
+    <%- include('../../partials/sidebar') %> 
+    <%- include('../../partials/header') %>
+
+    <main class="admin-main">
+      <div class="admin-content">
+        <div class="content-header">
+          <h1>Edit Song</h1>
+          <a href="/admin/songs" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Songs
+          </a>
+        </div>
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> <%= messages.error %>
+          </div>
+        <% } %>
+
+        <form action="/admin/songs/<%= song._id %>?_method=PUT" method="POST" class="song-form">
+          <div class="form-group">
+            <label for="song_name">Song Name</label>
+            <input
+              type="text"
+              id="song_name"
+              name="song_name"
+              class="form-control"
+              value="<%= song.song_name %>"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="language">Language</label>
+              <input
+                type="text"
+                id="language"
+                name="language"
+                class="form-control"
+                value="<%= song.language %>"
+                required
+              />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="bitrate">Bitrate</label>
+              <input
+                type="text"
+                id="bitrate"
+                name="bitrate"
+                class="form-control"
+                value="<%= song.bitrate %>"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="artist_id">Artist</label>
+              <select id="artist_id" name="artist_id" class="form-control" required>
+                <option value="">Select Artist</option>
+                <% artists.forEach(artist => { %>
+                <option value="<%= artist._id %>" <%= artist._id.toString() === song.artist_id.toString() ? 'selected' : '' %>>
+                  <%= artist.artist_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="album_id">Album</label>
+              <select id="album_id" name="album_id" class="form-control" required>
+                <option value="">Select Album</option>
+                <% albums.forEach(album => { %>
+                <option value="<%= album._id %>" <%= album._id.toString() === song.album_id.toString() ? 'selected' : '' %>>
+                  <%= album.album_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group text-right">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Update Song
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

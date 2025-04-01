@@ -1,0 +1,72 @@
+<!-- <header class="admin-header">
+  <div class="header-left">
+    <div class="menu-toggle" id="sidebarCollapse">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="admin-logo">
+      <a href="/admin">Music<span>Admin</span></a>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="admin-search">
+      <input type="text" placeholder="Search..." />
+      <i class="fas fa-search"></i>
+    </div>
+
+    <div class="admin-notification">
+      <i class="fas fa-bell"></i>
+      <span class="notification-count">3</span>
+    </div>
+
+    <div class="admin-profile">
+      <img src="/images/admin-avatar.jpg" alt="Admin" />
+      <div class="profile-info">
+        <span class="admin-name">Admin User</span>
+        <span class="admin-role">Super Admin</span>
+      </div>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+</header> -->
+
+<header class="admin-header">
+  <div class="header-left">
+    <div class="menu-toggle" id="sidebarCollapse">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="admin-logo">
+      <img style="width: 30px" src="../../../public//logo/logo.png" />
+      <a href="/admin">Beat<span>Music</span></a>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="admin-search">
+      <input type="text" placeholder="Search..." />
+      <i class="fas fa-search"></i>
+    </div>
+
+    <div class="admin-notification">
+      <i class="fas fa-bell"></i>
+      <span class="notification-count">3</span>
+    </div>
+
+    <div class="admin-profile">
+      <img src="/images/admin-avatar.jpg" alt="Admin" id="admin-avatar" />
+      <div class="profile-info">
+        <span class="admin-name" id="admin-name">Loading...</span>
+        <span class="admin-role" id="admin-role">Loading...</span>
+      </div>
+      <i class="fas fa-chevron-down" id="profile-dropdown-toggle"></i>
+
+      <!-- Dropdown menu -->
+      <div class="profile-dropdown" id="profile-dropdown">
+        <a href="/admin/profile">Profile Settings</a>
+        <form id="logout-form" action="/admin/logout" method="POST">
+          <button type="submit" class="logout-button">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
