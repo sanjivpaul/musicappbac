@@ -3,6 +3,7 @@ import { Song } from "../../models/songs/song.model.js";
 import fs from "fs";
 import path from "path";
 import { upload } from "../../middlewares/multer.middleware.js";
+import { count } from "console";
 
 // Helper function to delete temporary files
 const deleteTempFiles = (files) => {
@@ -149,5 +150,53 @@ const getAllSong = async (req, res) => {
 const getSongById = async () => {};
 const updateSong = async () => {};
 const deleteSong = async () => {};
+const getSongsByAlbum = async (req, res) => {
+  try {
+    const { album_id } = req.params;
+    const songs = await Song.find({ album_id });
 
-export { createSong, getAllSong, getSongById, updateSong, deleteSong };
+    console.log("songs===>", songs);
+
+    return res.status(200).json({
+      success: true,
+      count: songs.length,
+      data: songs,
+    });
+  } catch (error) {
+    console.error("Error fetching songs by album:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+const getSongsByArtist = async (req, res) => {
+  try {
+    const { artist_id } = req.params;
+    const songs = await Song.find({ artist_id });
+
+    console.log("songs by artist===>", songs);
+
+    return res.status(200).json({
+      success: true,
+      count: songs.length,
+      data: songs,
+    });
+  } catch (error) {
+    console.error("Error fetching songs by artist:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export {
+  createSong,
+  getAllSong,
+  getSongById,
+  updateSong,
+  deleteSong,
+  getSongsByAlbum,
+  getSongsByArtist,
+};

@@ -46,9 +46,9 @@ import { verifyJWT } from "../../middlewares/auth.middleware.js";
 const router = express.Router();
 
 // Login routes
-// router.get("/login", (req, res) => {
-//   res.render("pages/auth/login", { title: "Admin Login" });
-// });
+router.get("/login", (req, res) => {
+  res.render("pages/auth/login", { title: "Admin Login" });
+});
 
 router.post("/login", adminLogin);
 
