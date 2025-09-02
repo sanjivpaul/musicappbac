@@ -31,12 +31,16 @@ const createPlaylist = async (req, res) => {
       is_public: is_public || false,
     });
 
+    console.log("successfully create playlist:", newPlaylist);
+
     return res.status(201).json({
       success: true,
       message: "Playlist created successfully",
       data: newPlaylist,
     });
   } catch (error) {
+    console.log("create playlist error:", error);
+
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,

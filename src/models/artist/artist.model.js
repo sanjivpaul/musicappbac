@@ -50,4 +50,6 @@ const artistSchema = new Schema(
   }
 );
 
+
+
 export const Artist = mongoose.model("Artist", artistSchema);
