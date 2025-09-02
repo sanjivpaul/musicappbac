@@ -36,7 +36,7 @@ app.use(methodOverride("_method"));
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
-    credentials: true,
+    // credentials: true,
   })
 );
 app.use(express.static("public"));

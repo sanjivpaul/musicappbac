@@ -69,7 +69,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-2 py-6 space-y-2">
         <Link
-          to="/dashboard"
+          to="/home"
           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
         >
           <Home className="w-5 h-5" />
@@ -81,6 +81,13 @@ export default function Sidebar() {
         >
           <Users className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Users</span>}
+        </Link>
+        <Link
+          to="/songs"
+          className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
+        >
+          <Users className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Songs</span>}
         </Link>
         <Link
           to="/settings"

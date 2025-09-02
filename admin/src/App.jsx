@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import UsersPage from "./pages/users/UserPage";
+import SongsPage from "./pages/songs/SongsPage";
 // import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/users" element={<UsersPage />} />
+        <Route path="/songs" element={<SongsPage />} />
       </Routes>
     </>
   );

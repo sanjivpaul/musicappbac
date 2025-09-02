@@ -1,6 +1,7 @@
 import React from "react";
 import UserTable from "../../components/tables/UserTable";
 import DashboardLayout from "../home/DashboardLayout";
+import DynamicTable from "../../components/tables/DynamicTable";
 
 export default function UsersPage() {
   const users = [
@@ -32,6 +33,16 @@ export default function UsersPage() {
       <div>
         <h1 className="text-2xl font-bold mb-6">Manage Users</h1>
         <UserTable users={users} />
+        {/* <DynamicTable
+        title="Users"
+        data={users}
+        actions={(row) => (
+          <div className="flex gap-2">
+            <button className="text-blue-600 hover:underline">Edit</button>
+            <button className="text-red-600 hover:underline">Delete</button>
+          </div>
+        )}
+      /> */}
       </div>
     </DashboardLayout>
   );
