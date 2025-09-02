@@ -18,7 +18,7 @@ router.post("/login", loginUser);
 
 // Protected routes
 router.post("/logout", verifyJWT, logoutUser);
-router.get("/", verifyJWT, getAllUsers);
+router.get("/", getAllUsers);
 router.get("/:id", verifyJWT, getUserById);
 router.put("/:id", verifyJWT, updateUser);
 router.delete("/:id", verifyJWT, deleteUser);

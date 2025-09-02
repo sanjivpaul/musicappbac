@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -10,10 +11,28 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login Data:", form);
     // 👉 Add your login API call here
+
+    try {
+      const res = await axios.post("/api/user/login", form, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("✅ Login Success:", res.data);
+
+      if (res.data.token) {
+        // localStorage.setItem("token", res.data.token);
+      }
+
+      window.location.href = "/home";
+    } catch (err) {
+      console.error("❌ Login Error:", err);
+      alert("Login failed!");
+    }
   };
 
   return (
