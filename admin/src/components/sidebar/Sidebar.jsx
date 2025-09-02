@@ -43,24 +43,29 @@
 // }
 
 import React, { useState } from "react";
-import { Home, Users, Settings, LogOut, Menu } from "lucide-react";
+import { Home, Users, Settings, LogOut, Menu, Music } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/AuthSlice";
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+  const dispatch = useDispatch();
+  const [collapsed, setCollapsed] = useState(false); // for desktop collapse
+  const [mobileOpen, setMobileOpen] = useState(false); // for mobile toggle
 
-  return (
-    <aside
-      className={`h-screen bg-gray-800 text-white flex flex-col transition-all duration-300 ${
-        collapsed ? "w-20" : "w-64"
-      }`}
-    >
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  // Sidebar content (reusable)
+  const sidebarContent = (
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between h-16 border-b border-gray-700 px-4">
         {!collapsed && <h1 className="text-lg font-bold">My Admin</h1>}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded hover:bg-gray-700"
+          className="p-2 rounded hover:bg-gray-700 hidden lg:block"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -86,7 +91,7 @@ export default function Sidebar() {
           to="/songs"
           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
         >
-          <Users className="w-5 h-5" />
+          <Music className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Songs</span>}
         </Link>
         <Link
@@ -100,11 +105,54 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-700">
-        <button className="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-700">
+        <button
+          className="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-700"
+          onClick={handleLogout}
+        >
           <LogOut className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Logout</span>}
         </button>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Hamburger */}
+      <button
+        className="lg:hidden fixed top-2 left-4 z-50 p-2 bg-gray-800 text-white rounded-md mb-2 sm:mb-10"
+        onClick={() => setMobileOpen(true)}
+      >
+        <Menu className="w-6 h-6" />
+      </button>
+
+      {/* Desktop Sidebar */}
+      <aside
+        className={`hidden lg:flex flex-col transition-all duration-300 h-screen bg-gray-800 text-white ${
+          collapsed ? "w-20" : "w-64"
+        }`}
+      >
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Sidebar Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 flex">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={() => setMobileOpen(false)}
+          ></div>
+          <aside className="relative flex-1 flex flex-col w-64 bg-gray-800 text-white">
+            <button
+              className="absolute top-2 right-4 p-2 rounded hover:bg-gray-700"
+              onClick={() => setMobileOpen(false)}
+            >
+              ✕
+            </button>
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }

@@ -11,12 +11,17 @@ export default function SongsPage() {
   useEffect(() => {
     // Fetch songs from backend
     const fetchSongs = async () => {
-      try {
-        const response = await fetch("http://192.168.1.6:3001/song/get");
-        const json = await response.json();
+      setLoading(true);
 
-        if (json.success) {
-          setSongs(json.data);
+      try {
+        const response = await axios.get("/api/song/get");
+        // const json = await response.json();
+        // console.log(response);
+
+        if (response?.success) {
+          // setSongs(json.data);
+          setSongs(response?.data);
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error fetching songs:", error);

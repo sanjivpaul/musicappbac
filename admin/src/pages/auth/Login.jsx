@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginFailure, loginStart, loginSuccess } from "../../redux/AuthSlice";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -15,22 +18,28 @@ export default function Login() {
     e.preventDefault();
     console.log("Login Data:", form);
     // 👉 Add your login API call here
+    // dispatch(loginStart());
 
     try {
+      dispatch(loginStart());
+
       const res = await axios.post("/api/user/login", form, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log("✅ Login Success:", res.data);
+      console.log("✅ Login Success:", res);
 
-      if (res.data.token) {
+      if (res?.status == 200) {
+        // dispatch(loginSuccess(res.data.others));
         // localStorage.setItem("token", res.data.token);
+        dispatch(loginSuccess(res.data.data));
+        window.location.href = "/home";
       }
-
-      window.location.href = "/home";
     } catch (err) {
       console.error("❌ Login Error:", err);
+      dispatch(loginFailure());
+
       alert("Login failed!");
     }
   };
