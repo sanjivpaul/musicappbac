@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
+import UsersPage from "./pages/users/UserPage";
 // import "./App.css";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/users" element={<UsersPage />} />
       </Routes>
     </>
   );
