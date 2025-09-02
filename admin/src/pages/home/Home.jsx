@@ -1,9 +1,15 @@
 import React from "react";
+import DashboardLayout from "./DashboardLayout";
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <h1 className="text-3xl font-bold underline text-center">Vite + React</h1>
-    </div>
+    <DashboardLayout>
+      <h1 className="text-2xl font-bold text-gray-800">
+        Welcome to the Dashboard
+      </h1>
+      <p className="mt-2 text-gray-600">
+        Here’s where your admin stats will go.
+      </p>
+    </DashboardLayout>
   );
 }
