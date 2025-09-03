@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../home/DashboardLayout";
 import DynamicTable from "../../components/tables/DynamicTable";
+import axios from "axios";
 
 export default function SongsPage() {
   const [songs, setSongs] = useState([]);
@@ -18,9 +19,10 @@ export default function SongsPage() {
         // const json = await response.json();
         // console.log(response);
 
-        if (response?.success) {
+        if (response?.status == 200) {
           // setSongs(json.data);
-          setSongs(response?.data);
+          setSongs(response?.data?.data);
+
           setLoading(false);
         }
       } catch (error) {

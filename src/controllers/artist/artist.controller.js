@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Artist } from "../../models/artist/artist.model.js";
+import mongoose from "mongoose";
 
 // Helper function to delete temporary files
 const deleteTempFiles = (files) => {
@@ -26,6 +27,8 @@ const createArtist = async (req, res) => {
   try {
     const { artist_name, country_of_origin, category, play_counter, likes } =
       req.body;
+
+    console.log(req.body);
 
     // Check required fields
     if (!artist_name || !category) {
@@ -185,12 +188,72 @@ const getArtistById = async (req, res) => {
 };
 
 // Update Artist
+// const updateArtist = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     // const updates = req.body;
+
+//     // Validate ID format
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid artist ID format",
+//       });
+//     }
+
+//     // Start with the body fields
+//     const updates = { ...req.body };
+
+//     // Handle file upload if thumbnail is sent
+//     if (req.file) {
+//       updates.thumbnail_path = req.file.path;
+//       updates.pictures_path = req.file.path;
+//     }
+
+//     // Convert text fields to lowercase if they exist
+//     if (updates.artist_name)
+//       updates.artist_name = updates.artist_name.toLowerCase();
+//     if (updates.category) updates.category = updates.category.toLowerCase();
+//     if (updates.country_of_origin)
+//       updates.country_of_origin = updates.country_of_origin.toLowerCase();
+
+//     const updatedArtist = await Artist.findByIdAndUpdate(id, updates, {
+//       new: true,
+//       runValidators: true,
+//     });
+
+//     if (!updatedArtist) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Artist not found",
+//       });
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Artist updated successfully",
+//       data: updatedArtist,
+//     });
+//   } catch (error) {
+//     console.error("Error updating artist:", error);
+//     if (error.code === 11000) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Artist with this name already exists",
+//       });
+//     }
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//       error: error.message,
+//     });
+//   }
+// };
+
 const updateArtist = async (req, res) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
 
-    // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
@@ -198,12 +261,36 @@ const updateArtist = async (req, res) => {
       });
     }
 
-    // Convert text fields to lowercase if they exist
-    if (updates.artist_name)
-      updates.artist_name = updates.artist_name.toLowerCase();
-    if (updates.category) updates.category = updates.category.toLowerCase();
-    if (updates.country_of_origin)
-      updates.country_of_origin = updates.country_of_origin.toLowerCase();
+    // Start with body updates
+    const updates = {};
+
+    if (req.body.artist_name) {
+      updates.artist_name = req.body.artist_name.toLowerCase();
+    }
+    if (req.body.category) {
+      updates.category = req.body.category.toLowerCase();
+    }
+    if (req.body.country_of_origin) {
+      updates.country_of_origin = req.body.country_of_origin.toLowerCase();
+    }
+    if (req.body.play_counter) {
+      updates.play_counter = req.body.play_counter;
+    }
+    if (req.body.likes) {
+      updates.likes = req.body.likes;
+    }
+
+    // Handle file uploads (only update if provided)
+    if (req.files) {
+      if (req.files["thumbnail"]?.[0]) {
+        updates.thumbnail_path = req.files["thumbnail"][0].path;
+      }
+      if (req.files["pictures"]?.[0]) {
+        updates.pictures_path = req.files["pictures"][0].path;
+      }
+    } else if (req.file) {
+      updates.thumbnail_path = req.file.path;
+    }
 
     const updatedArtist = await Artist.findByIdAndUpdate(id, updates, {
       new: true,

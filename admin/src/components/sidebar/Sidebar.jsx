@@ -95,6 +95,13 @@ export default function Sidebar() {
           {!collapsed && <span className="ml-3">Songs</span>}
         </Link>
         <Link
+          to="/artist"
+          className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
+        >
+          <Music className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Artist</span>}
+        </Link>
+        <Link
           to="/settings"
           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
         >

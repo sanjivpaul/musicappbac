@@ -25,20 +25,18 @@ const songSchema = new Schema(
 
     // (FK)
     artist_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Artist",
       required: true,
-      lowecase: true,
-      trim: true,
-      // index: true,
+      index: true,
     },
 
     // (FK)
     album_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Album",
       required: true,
-      lowecase: true,
-      trim: true,
-      // index: true,
+      index: true,
     },
 
     song_path: {

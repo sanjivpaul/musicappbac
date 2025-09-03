@@ -124,7 +124,9 @@ const getAllSong = async (req, res) => {
     const songs = await Song.find(filter)
       .skip(skip)
       .limit(limit)
-      .sort({ createdAt: -1 }); // Newest first
+      .sort({ createdAt: -1 })
+      .populate("artist_id") // 👈 fetch full artist
+      .populate("album_id"); // Newest first
     // .populate('artist_id') // Uncomment if using references
     // .populate('album_id'); // Uncomment if using references
 
@@ -150,12 +152,45 @@ const getAllSong = async (req, res) => {
 const getSongById = async () => {};
 const updateSong = async () => {};
 const deleteSong = async () => {};
+// const getSongsByAlbum = async (req, res) => {
+//   try {
+//     const { album_id } = req.params;
+//     const songs = await Song.find({ album_id: album_id })
+//       .populate("artist_id") // 👈 fetch full artist
+//       .populate("album_id");
+
+//     console.log("songs===>", songs);
+
+//     return res.status(200).json({
+//       success: true,
+//       count: songs.length,
+//       data: songs,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching songs by album:", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
+
 const getSongsByAlbum = async (req, res) => {
   try {
     const { album_id } = req.params;
-    const songs = await Song.find({ album_id });
 
-    console.log("songs===>", songs);
+    if (!mongoose.Types.ObjectId.isValid(album_id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid album ID",
+      });
+    }
+
+    const songs = await Song.find({
+      album_id: new mongoose.Types.ObjectId(album_id),
+    })
+      .populate("artist_id")
+      .populate("album_id");
 
     return res.status(200).json({
       success: true,
