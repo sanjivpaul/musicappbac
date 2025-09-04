@@ -18,14 +18,14 @@ export default function SongTable({ data = [], actions }) {
       <table className="min-w-full border border-gray-200 text-sm">
         <thead className="bg-gray-100">
           <tr>
-            <th className="px-4 py-2 border-b">Thumbnail</th>
-            <th className="px-4 py-2 border-b">Song Name</th>
-            <th className="px-4 py-2 border-b">Language</th>
-            <th className="px-4 py-2 border-b">Bitrate</th>
-            <th className="px-4 py-2 border-b">Artist</th>
-            <th className="px-4 py-2 border-b">Album</th>
-            <th className="px-4 py-2 border-b">Likes</th>
-            <th className="px-4 py-2 border-b">Plays</th>
+            <th className="px-4 text-left py-2 border-b">Thumbnail</th>
+            <th className="px-4 text-left py-2 border-b">Song Name</th>
+            <th className="px-4 text-left py-2 border-b">Language</th>
+            <th className="px-4 text-left py-2 border-b">Bitrate</th>
+            <th className="px-4 text-left py-2 border-b">Artist</th>
+            <th className="px-4 text-left py-2 border-b">Album</th>
+            <th className="px-4 text-left py-2 border-b">Likes</th>
+            <th className="px-4 text-left py-2 border-b">Plays</th>
             {actions && <th className="px-4 py-2 border-b">Actions</th>}
           </tr>
         </thead>
@@ -35,7 +35,7 @@ export default function SongTable({ data = [], actions }) {
               key={song._id || index}
               className="hover:bg-gray-50 transition-colors"
             >
-              <td className="px-4 py-2 border-b">
+              <td className="px-4  py-2 border-b">
                 <img
                   src={`/api/${formatImageUri(song.thumbnail_path)}`}
                   alt={song.song_name}

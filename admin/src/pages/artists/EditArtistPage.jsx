@@ -5,30 +5,37 @@ import DashboardLayout from "../home/DashboardLayout";
 import AlertMessage from "../../components/alerts/AlertMessage";
 
 export default function EditArtistPage() {
-  const { id } = useParams(); // get artist id from URL
-  //   console.log("id=", id);
-
+  const { id } = useParams();
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     artist_name: "",
     country_of_origin: "",
     category: "",
+    play_counter: "0",
+    likes: "0",
     thumbnail: null,
+    pictures: null,
   });
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  // Fetch artist details by id
+  // Fetch artist details
   useEffect(() => {
     const fetchArtist = async () => {
       try {
         const response = await axios.get(`/api/artist/get/${id}`);
         const data = response.data.data;
+
         setForm({
-          artist_name: data.artist_name,
-          country_of_origin: data.country_of_origin,
-          category: data.category,
-          thumbnail: null, // keep null unless uploading a new file
+          artist_name: data.artist_name || "",
+          country_of_origin: data.country_of_origin || "",
+          category: data.category || "",
+          play_counter: data.play_counter || "0",
+          likes: data.likes || "0",
+          thumbnail: null, // reset file field
+          pictures: null,
         });
       } catch (error) {
         setAlert({ type: "error", message: "Failed to load artist details." });
@@ -52,16 +59,16 @@ export default function EditArtistPage() {
     formData.append("artist_name", form.artist_name);
     formData.append("country_of_origin", form.country_of_origin);
     formData.append("category", form.category);
-    if (form.thumbnail) formData.append("thumbnail", form.thumbnail);
+    formData.append("play_counter", form.play_counter);
+    formData.append("likes", form.likes);
 
-    // Debugging: log the FormData correctly
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+    if (form.thumbnail) formData.append("thumbnail", form.thumbnail);
+    if (form.pictures) formData.append("pictures", form.pictures);
 
     try {
+      setSaving(true);
       await axios.put(`/api/artist/update/${id}`, formData, {
-        // headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       setAlert({ type: "success", message: "Artist updated successfully!" });
@@ -73,6 +80,8 @@ export default function EditArtistPage() {
           error.response?.data?.message ||
           "Failed to update artist. Try again.",
       });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -103,6 +112,7 @@ export default function EditArtistPage() {
             className="w-full border p-2 rounded"
             required
           />
+
           <input
             type="text"
             name="country_of_origin"
@@ -112,6 +122,7 @@ export default function EditArtistPage() {
             className="w-full border p-2 rounded"
             required
           />
+
           <input
             type="text"
             name="category"
@@ -121,18 +132,57 @@ export default function EditArtistPage() {
             className="w-full border p-2 rounded"
             required
           />
+
           <input
-            type="file"
-            name="thumbnail"
+            type="number"
+            name="play_counter"
+            placeholder="Play Counter"
+            value={form.play_counter}
             onChange={handleChange}
             className="w-full border p-2 rounded"
           />
 
+          <input
+            type="number"
+            name="likes"
+            placeholder="Likes"
+            value={form.likes}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <div>
+            <label className="block text-sm font-medium">
+              Thumbnail (replace)
+            </label>
+            <input
+              type="file"
+              name="thumbnail"
+              accept="image/*"
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium">
+              Pictures (replace, optional)
+            </label>
+            <input
+              type="file"
+              name="pictures"
+              accept="image/*"
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            disabled={saving}
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
           >
-            Update Artist
+            {saving ? "Updating..." : "Update Artist"}
           </button>
         </form>
       </div>

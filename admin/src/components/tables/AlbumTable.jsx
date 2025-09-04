@@ -19,12 +19,12 @@ export default function AlbumTable({ data = [], actions }) {
       <table className="min-w-full border border-gray-200 text-sm">
         <thead className="bg-gray-100">
           <tr>
-            <th className="px-4 py-2 border-b">Thumbnail</th>
-            <th className="px-4 py-2 border-b">Album Name</th>
-            <th className="px-4 py-2 border-b">Artist ID</th>
-            <th className="px-4 py-2 border-b">Genre</th>
-            <th className="px-4 py-2 border-b">Likes</th>
-            <th className="px-4 py-2 border-b">Plays</th>
+            <th className="px-4 text-left py-2 border-b">Thumbnail</th>
+            <th className="px-4 text-left py-2 border-b">Album Name</th>
+            <th className="px-4 text-left py-2 border-b">Artist ID</th>
+            <th className="px-4 text-left py-2 border-b">Genre</th>
+            <th className="px-4 text-left py-2 border-b">Likes</th>
+            <th className="px-4 text-left py-2 border-b">Plays</th>
             {actions && <th className="px-4 py-2 border-b">Actions</th>}
           </tr>
         </thead>

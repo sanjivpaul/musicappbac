@@ -20,10 +20,10 @@ export default function AddSongPage() {
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [artistData, setArtistData] = useState([]);
-  console.log("artistData===>", artistData);
+  //   console.log("artistData===>", artistData);
 
   const [albumData, setAlbumData] = useState([]);
-  console.log("albumData===>", albumData);
+  //   console.log("albumData===>", albumData);
 
   const navigate = useNavigate();
 

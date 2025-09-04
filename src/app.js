@@ -58,6 +58,7 @@ import playlistRouter from "../src/routes/playlist/playlist.routes.js";
 import userRouter from "../src/routes/user/user.routes.js";
 import adminRouter from "../src/routes/admin/admin.routes.js";
 import downloadSongRouter from "../src/routes/downloadSong/downloadsong.routes.js";
+import categoryRouter from "../src/routes/category/category.routes.js";
 
 app.use("/song", songRouter);
 app.use("/artist", artistRoute);
@@ -67,6 +68,7 @@ app.use("/playlist", playlistRouter);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/download", downloadSongRouter);
+app.use("/category", categoryRouter);
 
 // app.use("/tasks", taskRouter);
 

@@ -35,19 +35,19 @@ export default function UserTable({ users }) {
           <tbody className="bg-white divide-y divide-gray-200">
             {users.map((user, index) => (
               <tr key={user.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-4 py-4 text-left whitespace-nowrap text-sm text-gray-500">
                   {index + 1}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {user.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                   {user.email}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                   {user.role}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-4 whitespace-nowrap">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       user.active
@@ -58,7 +58,7 @@ export default function UserTable({ users }) {
                     {user.active ? "Active" : "Inactive"}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button className="text-indigo-600 hover:text-indigo-900 mr-3">
                     Edit
                   </button>
