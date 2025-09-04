@@ -132,6 +132,7 @@ const getAllArtists = async (req, res) => {
       .skip(skip)
       .limit(limit)
       .sort(sort);
+    // .populate("artist_id");
 
     const totalArtists = await Artist.countDocuments(filter);
 
@@ -264,6 +265,8 @@ const updateArtist = async (req, res) => {
     // Start with body updates
     const updates = {};
 
+    // console.log("req body===>", req.body);
+
     if (req.body.artist_name) {
       updates.artist_name = req.body.artist_name.toLowerCase();
     }
@@ -292,10 +295,14 @@ const updateArtist = async (req, res) => {
       updates.thumbnail_path = req.file.path;
     }
 
+    // console.log("updates===>", updates);
+
     const updatedArtist = await Artist.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
     });
+
+    // console.log("updatedArtist===>", updatedArtist);
 
     if (!updatedArtist) {
       return res.status(404).json({

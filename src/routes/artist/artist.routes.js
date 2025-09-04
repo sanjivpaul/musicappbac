@@ -33,9 +33,18 @@ router.get("/get", getAllArtists);
 router.get("/get/:id", getArtistById);
 // GET /api/artists/507f1f77bcf86cd799439011
 
-router.put("/update/:id", updateArtist);
+// router.put("/update/:id", updateArtist);
 // PUT /api/artists/507f1f77bcf86cd799439011
 // Body: { "category": "pop" }
+
+router.put(
+  "/update/:id",
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "pictures", maxCount: 1 },
+  ]),
+  updateArtist
+);
 
 router.delete("/delete/:id", deleteArtist);
 // DELETE /api/artists/507f1f77bcf86cd799439011

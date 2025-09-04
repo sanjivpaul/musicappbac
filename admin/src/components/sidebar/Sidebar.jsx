@@ -1,49 +1,15 @@
-// import React from "react";
-// import { Home, Users, Settings, LogOut } from "lucide-react";
-// import { Link } from "react-router-dom";
-
-// export default function Sidebar() {
-//   return (
-//     <aside className="h-screen w-64 bg-gray-800 text-white flex flex-col">
-//       {/* Logo */}
-//       <div className="flex items-center justify-center h-16 border-b border-gray-700">
-//         <h1 className="text-lg font-bold">Music</h1>
-//       </div>
-
-//       {/* Navigation */}
-//       <nav className="flex-1 px-4 py-6 space-y-2">
-//         <Link
-//           to="/dashboard"
-//           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
-//         >
-//           <Home className="w-5 h-5 mr-2" /> Dashboard
-//         </Link>
-//         <Link
-//           to="/users"
-//           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
-//         >
-//           <Users className="w-5 h-5 mr-2" /> Users
-//         </Link>
-//         <Link
-//           to="/settings"
-//           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
-//         >
-//           <Settings className="w-5 h-5 mr-2" /> Settings
-//         </Link>
-//       </nav>
-
-//       {/* Footer */}
-//       <div className="p-4 border-t border-gray-700">
-//         <button className="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-700">
-//           <LogOut className="w-5 h-5 mr-2" /> Logout
-//         </button>
-//       </div>
-//     </aside>
-//   );
-// }
-
 import React, { useState } from "react";
-import { Home, Users, Settings, LogOut, Menu, Music } from "lucide-react";
+import {
+  Home,
+  Users,
+  Settings,
+  LogOut,
+  Menu,
+  Music,
+  Mic,
+  Library,
+  ListMusic,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
@@ -98,8 +64,22 @@ export default function Sidebar() {
           to="/artist"
           className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
         >
-          <Music className="w-5 h-5" />
+          <Mic className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Artist</span>}
+        </Link>
+        <Link
+          to="/album"
+          className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
+        >
+          <Library className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Album</span>}
+        </Link>
+        <Link
+          to="/playlist"
+          className="flex items-center px-3 py-2 rounded-lg hover:bg-gray-700"
+        >
+          <ListMusic className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Playlist</span>}
         </Link>
         <Link
           to="/settings"
